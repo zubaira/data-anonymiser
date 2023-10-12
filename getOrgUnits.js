@@ -8,7 +8,7 @@ const URL = "https://demo.pakdhis2.org/api/organisationUnitGroups/QSKdbtmrMj9.js
 let getRequestArgs = {
     headers: { 
         "Content-Type": "application/json",
-        "Authorization": "ApiToken d2pat_qz022f7AxyA2b6uuS4RHutyDZyt6RDgF4274123802",
+        "Authorization": "ApiToken <token>",
         "Accept":"application/json"
     }
 };
