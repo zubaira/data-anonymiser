@@ -25,18 +25,14 @@ let downloadData = (getRequestArgs) => {
         return new Promise((resolve,reject) => {
 
             client.get( URL, getRequestArgs, (data, response) => {
-
                     console.log( "connecting to " + URL );
-
                     if ( response.statusCode === 200){
-
                         console.log('connected with statusCode: ' + response.statusCode );
                         console.log( JSON.stringify(data));
                         resolve('Data downloaded');
-                    
                     }
                     else{
-                            reject('Connection with server ' + URL +' refused with statusCode: ' + response.statusCode)
+                        reject('Connection with server ' + URL +' refused with statusCode: ' + response.statusCode)
                     }
             });
         });
@@ -49,11 +45,10 @@ let startDownload = async () => {
 startDownload();
 
 function loadProperties(){
-    if ( !fileSystem.existsSync("properties.file")){
-        console.error('Properties file not found');
+    if ( !fileSystem.existsSync(process.argv[2])){
+        console.error(  process.argv[2] +' file not found');
         process.exit();
     }
-
-    console.log('loading configuration from properties file');
-    return propertiesReader("properties.file");
+    console.log('loading configuration from ' + process.argv[2]);
+    return new PropertiesReader(process.argv[2]);
 }
