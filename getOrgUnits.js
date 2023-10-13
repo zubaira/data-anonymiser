@@ -3,6 +3,7 @@
 const propertiesReader = require('properties-reader');
 const http = require('https');
 const fileSystem = require('fs');
+const PropertiesReader = require('properties-reader');
 const Client = require('node-rest-client').Client;  
 const client = new Client();
 
@@ -15,16 +16,21 @@ const API_TOKEN = 'ApiToken ' + properies.get('server.token');
 let getRequestArgs = {
     headers: { 
         "Content-Type": "application/json",
-        "Authorization": `ApiToken ${API_TOKEN}`,
+        "Authorization":  API_TOKEN,
         "Accept":"application/json"
     }
 };
 
 let downloadData = (getRequestArgs) => {
         return new Promise((resolve,reject) => {
+
             client.get( URL, getRequestArgs, (data, response) => {
+
+                    console.log( "connecting to " + URL );
+
                     if ( response.statusCode === 200){
-                        console.log('statusCode: ' + response.statusCode );
+
+                        console.log('connected with statusCode: ' + response.statusCode );
                         console.log( JSON.stringify(data));
                         resolve('Data downloaded');
                     
@@ -42,14 +48,12 @@ let startDownload = async () => {
 
 startDownload();
 
-
-function loadProperties()
-{
+function loadProperties(){
     if ( !fileSystem.existsSync("properties.file")){
         console.error('Properties file not found');
         process.exit();
     }
 
-    console.log('Loading properties from file');
-    return new propertiesReader("properties.file");
+    console.log('loading configuration from properties file');
+    return propertiesReader("properties.file");
 }
