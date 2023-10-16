@@ -5,7 +5,7 @@ const options = {
   path : '/api/organisationUnitGroups/QSKdbtmrMj9.json',
   method: 'GET',
   headers : {
-      'authorization' : 'ApiToken d2pat_qz022f7AxyA2b6uuS4RHutyDZyt6RDgF4274123802'
+      'authorization' : 'ApiToken <API_TOKEN>'
   }
 };
 
