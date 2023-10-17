@@ -1,0 +1,10 @@
+{
+  "name": "data_anonymizer",
+  "description": "DHIS2 data-anonymiser script",
+  "author": "Arslan Mughal <arslan@hisp.org.pk>",
+  "dependencies": { 
+  "follow-redirects": "^1.15.3",
+  "node-fetch": "^3.3.2"
+  
+  }
+}
