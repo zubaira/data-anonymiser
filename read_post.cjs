@@ -23,7 +23,7 @@ fs.promises.readdir(directoryPath)
                         path: '/api/trackedEntityInstances?strategy=UPDATE',
                         headers: {
                             'Content-Type': 'application/json',
-                            'Authorization': 'ApiToken d2pat_9USCM2cS2QH0HFBwDRfDZdEPLRO5OZGc2798345445',
+                            'Authorization': 'ApiToken d2pat_dsklsdkfsdklfsd',
                             'Cookie': 'JSESSIONID=B6971D2233806AD479BFC74A836663FC'
                         }
                     };
