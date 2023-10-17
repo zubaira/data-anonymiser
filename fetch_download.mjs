@@ -15,7 +15,7 @@ function getRandomCnic() {
 }
 
 // API Token
-const apiKey = 'd2pat_9USCM2cS2QH0HFBwDRfDZdEPLRO5OZGc2798345445';
+const apiKey = '';
 
 // Fetch organization unit groups data with Authorization header
 async function fetchData() {
