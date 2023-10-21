@@ -18,11 +18,13 @@ function getRandomCnic() {
     return cnic[randomIndex2];
 }
 
-// API Token
 const properties = loadProperties();
 const apiToken = properties.get("source.server.token");
 const sourceServerUrl =  properties.get( "source.server.url" );
 const sourceServerOrgUnitUrl = properties.get( "source.server.orgunit.url" );
+const downloadDirectory = properties.get( "source.download.file" );
+const logging = process.argv[3];
+
 
 // Fetch organization unit groups data with Authorization header
 async function fetchData() {
@@ -34,19 +36,36 @@ async function fetchData() {
         });
         const data = await response.json();
 
+        if ( logEnabled() ) console.log( data );
+        
         // Extract organization unit IDs from the response
         const ouIds = data.organisationUnits.map(unit => unit.id);
 
         // Process each organization unit ID
+        
+        fs.mkdir(downloadDirectory, err => {
+            if(err){
+                console.error( err );
+            }else{
+                if ( logEnabled() ) console.log(" directory created " );
+            }
+        });
+        
          await Promise.all(ouIds.map(async ouId => {
-            const response = await fetch( sourceServerOrgUnitUrl, {
+
+            if ( logEnabled == '-d' ) console.log( "Downloading data from: " + ouId );
+
+            const teiUrl = sourceServerOrgUnitUrl.replace( '${ouId}',ouId);
+            const response = await fetch( teiUrl, {
                 headers: {
-                    'Authorization': `ApiToken ${apiKey}`
-                }
+                    'Authorization': `ApiToken ${apiToken}`
+                }   
             });
+
             const data = await response.json();
 
             // Filter attributes and regenerate payload with random names for specific attributes
+
             const filteredPayload = data.trackedEntityInstances.map(instance => {
                 const filteredAttributes = instance.attributes.filter(attribute => {
                     return attribute.attribute === "sB1IHYu2xQT" || attribute.attribute === "ENRjVGxVL6l"  || attribute.attribute === "z9uj8ikQFQ2";
@@ -69,17 +88,16 @@ async function fetchData() {
             // Convert the payload to a JSON string
             const jsonString = JSON.stringify(regeneratedPayload, null, 2);
 
-            // Specify the folder path to save the output files
-            const folderPath = 'D:/data_anonymizer/output';
-
-            // Create the folder if it doesn't exist
-            await fs.mkdir(folderPath, { recursive: true });
-
             // Write the JSON string to a file named 'output.json' with the organization unit ID as the filename
-            const filePath = path.join(folderPath, `${ouId}.json`);
-            await fs.writeFile(filePath, jsonString, 'utf-8');
-            console.log(`File successfully created: ${filePath}`);
-        })); 
+            const filePath = path.join(downloadDirectory, `${ouId}.json`);
+            await fs.writeFile(filePath, jsonString, 'utf-8', err => {
+                 if(err)console.error( err );
+                 
+                 if ( logEnabled()  )console.log(" File Written " );
+            });
+
+            if(logEnabled())console.log(`File successfully created: ${filePath}`);
+        }));   
     } catch (error) {
         console.error(error);
     }
@@ -87,17 +105,22 @@ async function fetchData() {
 
 fetchData(); // Call the function to start the process
 
-
 function loadProperties()
 {
     const propertiesFile = process.argv[2];
-
     if (!fs.existsSync(propertiesFile))
     {
-        console.error( propertiesFile + ' not found');
+        console.error( 'file: ' + propertiesFile + ' not found');
         process.exit();
     }
 
     console.log('Loading properties from ' + propertiesFile );
     return new propertiesReader( propertiesFile );
+}
+
+function logEnabled()
+{
+    if ( logging == '-d' )return true;
+
+    return false;
 }
