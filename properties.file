@@ -1,3 +1,15 @@
-source.server.url = https://demo.pakdhis2.org/api/organisationUnitGroups/QSKdbtmrMj9.json
-source.server.orgunit.url= https://tracker.pakdhis2.org/api/trackedEntityInstances.json?ou=${ouId}&program=Lt6P15ps7f6&fields=trackedEntityInstance&fields=orgUnit&fields=attributes[attribute,value]&pageSize=1000
-source.server.token = d2pat_qz022f7AxyA2b6uuS4RHutyDZyt6RDgF4274123802
+source.server.url = https://tracker.pakdhis2.org/api/organisationUnitGroups/QSKdbtmrMj9.json?fields=organisationUnits
+source.server.orgunit.url= https://tracker.pakdhis2.org/api/trackedEntityInstances.json?ou=${ouId}&program=Lt6P15ps7f6&fields=trackedEntityInstance,orgUnit,attributes[attribute,value]&pageSize=1000
+source.server.token =<token>
+source.download.dir= ./downloaded/
+source.download.dry.file= downloaded.ORIG
+source.names.file=./names.json
+source.cnic.file=./cnic.json
+
+
+destination.server.url = 
+destination.server.orgunit.url =
+destination.server.token = 
+
+
+

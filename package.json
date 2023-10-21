@@ -2,11 +2,12 @@
   "name": "data_anonymizer",
   "description": "DHIS2 data-anonymiser script",
   "author": "HISP Pakistan info@hisp.org.pk>",
-  "dependencies": { 
-  "follow-redirects": "^1.15.3",
-  "node-fetch": "^3.3.2",
-  "properties-reader": "~0.3.1"
-
-  
+  "main": "fetch_and_anonymise_data.mjs",
+  "type": "module",
+  "dependencies": {
+    "follow-redirects": "^1.15.3",
+    "node-fetch": "^3.3.2",
+    "properties-reader": "^2.3.0",
+    "yargs": "^17.7.2"
   }
 }
