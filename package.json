@@ -4,7 +4,9 @@
   "author": "HISP Pakistan info@hisp.org.pk>",
   "dependencies": { 
   "follow-redirects": "^1.15.3",
-  "node-fetch": "^3.3.2"
+  "node-fetch": "^3.3.2",
+  "properties-reader": "~0.3.1"
+
   
   }
 }

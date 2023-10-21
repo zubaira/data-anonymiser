@@ -1,9 +1,9 @@
 
-
-const fetch = require('node-fetch');
-const fs = require('fs/promises');
-const path = require('path');
-const propertiesReader = require('properties-reader');
+'use strict';
+import fetch from 'node-fetch';
+import fs  from 'fs';
+import path from 'path';
+import propertiesReader from 'properties-reader';
 
 
 // Function to generate random names
@@ -38,7 +38,7 @@ async function fetchData() {
         const ouIds = data.organisationUnits.map(unit => unit.id);
 
         // Process each organization unit ID
-        await Promise.all(ouIds.map(async ouId => {
+         await Promise.all(ouIds.map(async ouId => {
             const response = await fetch( sourceServerOrgUnitUrl, {
                 headers: {
                     'Authorization': `ApiToken ${apiKey}`
@@ -79,7 +79,7 @@ async function fetchData() {
             const filePath = path.join(folderPath, `${ouId}.json`);
             await fs.writeFile(filePath, jsonString, 'utf-8');
             console.log(`File successfully created: ${filePath}`);
-        }));
+        })); 
     } catch (error) {
         console.error(error);
     }
