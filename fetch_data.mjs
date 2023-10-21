@@ -4,7 +4,6 @@ import fetch from 'node-fetch';
 import fs  from 'fs';
 import path from 'path';
 import propertiesReader from 'properties-reader';
-import { error } from 'console';
 
 const properties = loadProperties();
 const apiToken = properties.get("source.server.token");
