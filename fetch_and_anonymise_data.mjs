@@ -10,7 +10,7 @@ const apiToken = properties.get("source.server.token");
 const sourceServerUrl =  properties.get( "source.server.url" );
 const sourceServerOrgUnitUrl = properties.get( "source.server.orgunit.url" );
 const downloadDirectory = properties.get( "source.download.dir" );
-const namesFile = properties.get( "source.name.file" );
+const namesFile = properties.get( "source.names.file" );
 const cnicFile = properties.get( "source.cnic.file" );
 
 const logging = process.argv[3];
@@ -106,11 +106,11 @@ async function fetchData() {
 fetchData(); // Call the function to start the process
 
 function getRandomName() {
-      var json = JSON.parse(fs.readFileSync('./names.json').toString());
+      var json = JSON.parse(fs.readFileSync(namesFile).toString());
       return json; 
 }
 function getRandomCnic() {
-    var json = JSON.parse(fs.readFileSync('./cnic.json').toString());
+    var json = JSON.parse(fs.readFileSync(cnicFile).toString());
     return json; 
 }
 
