@@ -7,16 +7,14 @@ import propertiesReader from 'properties-reader';
 
 const properties = loadProperties();
 const apiToken = properties.get("source.server.token");
-const sourceServerUrl =  properties.get( "source.server.url" );
-const sourceServerOrgUnitUrl = properties.get( "source.server.orgunit.url" );
+const sourceServerUrl =  properties.get( "source.server.ou.url" );
+const sourceServerOrgUnitUrl = properties.get( "source.server.tei.url" );
 const downloadDirectory = properties.get( "source.download.dir" );
-const namesFile = properties.get( "source.names.file" );
-const cnicFile = properties.get( "source.cnic.file" );
-
+const dictionaryFie = properties.get( "source.server.dictionary" );
 const logging = process.argv[3];
+const dataDictionary = readDataDictionary();
 
-const nameCollection = getRandomName();
-const cnicCollection = getRandomCnic();
+const attributesToAnonymise = ["w75KJ2mc4zz","zDhUuAYrxNC"];  //TODO to be loaded from file
 
 // Fetch organization unit groups data with Authorization header
 async function fetchData() {
@@ -62,16 +60,14 @@ async function fetchData() {
             
             // Filter attributes and regenerate payload with random names for specific attributes
 
-            
             const filteredPayload = data.trackedEntityInstances.map(instance => {
+
                 const filteredAttributes = instance.attributes.filter(attribute => {
-                    return attribute.attribute === "sB1IHYu2xQT" || attribute.attribute === "ENRjVGxVL6l"  || attribute.attribute === "z9uj8ikQFQ2";
+                    return attributesToAnonymise.includes( attribute.attribute );
                 }).map(attribute => {
-                    if (attribute.attribute === "sB1IHYu2xQT" || attribute.attribute === "ENRjVGxVL6l") {
-                        attribute.value = nameCollection[Math.floor(Math.random() * nameCollection.length)];
-                    } else if (attribute.attribute === "z9uj8ikQFQ2") {
-                        attribute.value = cnicCollection[Math.floor(Math.random() * cnicCollection.length)];
-                    }
+
+                    var values = dataDictionary.get(attribute.attribute);
+                    attribute.value = values[Math.floor(Math.random() * values.length)];
                     return attribute;
                 
                 });
@@ -112,6 +108,13 @@ function getRandomName() {
 function getRandomCnic() {
     var json = JSON.parse(fs.readFileSync(cnicFile).toString());
     return json; 
+}
+
+function readDataDictionary() {
+
+    var map = new Map(Object.entries(JSON.parse(fs.readFileSync(dictionaryFie).toString())));
+
+    return map; 
 }
 
 function loadProperties(){
