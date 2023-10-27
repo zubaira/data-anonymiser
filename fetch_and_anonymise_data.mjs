@@ -10,11 +10,10 @@ const apiToken = properties.get("source.server.token");
 const sourceServerUrl =  properties.get( "source.server.ou.url" );
 const sourceServerOrgUnitUrl = properties.get( "source.server.tei.url" );
 const downloadDirectory = properties.get( "source.download.dir" );
-const dictionaryFie = properties.get( "source.server.dictionary" );
+const dictionaryFile = properties.get( "source.server.dictionary" );
 const logging = process.argv[3];
 const dataDictionary = readDataDictionary();
-
-const attributesToAnonymise = ["w75KJ2mc4zz","zDhUuAYrxNC"];  //TODO to be loaded from file
+const attributesToAnonymise = readAttributes();  //TODO to be loaded from file
 
 // Fetch organization unit groups data with Authorization header
 async function fetchData() {
@@ -101,20 +100,17 @@ async function fetchData() {
 
 fetchData(); // Call the function to start the process
 
-function getRandomName() {
-      var json = JSON.parse(fs.readFileSync(namesFile).toString());
-      return json; 
-}
-function getRandomCnic() {
-    var json = JSON.parse(fs.readFileSync(cnicFile).toString());
-    return json; 
-}
-
 function readDataDictionary() {
 
-    var map = new Map(Object.entries(JSON.parse(fs.readFileSync(dictionaryFie).toString())));
+    var map = new Map(Object.entries(JSON.parse(fs.readFileSync(dictionaryFile).toString())));
 
     return map; 
+}
+
+function readAttributes() {
+
+   var value = properties.get("source.server.attributes");
+   return value.split(",");
 }
 
 function loadProperties(){
