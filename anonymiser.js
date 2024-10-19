@@ -4,9 +4,9 @@ import fetch from 'node-fetch';
 import fs  from 'fs';
 import path from 'path';
 import propertiesReader from 'properties-reader';
+import { stringify } from 'querystring';
 
 const properties = loadProperties();
-const apiToken = properties.get("source.server.token");
 const sourceServerUrl =  properties.get( "source.server.ou.url" );
 const sourceServerOrgUnitUrl = properties.get( "source.server.tei.url" );
 const downloadDirectory = properties.get( "source.download.dir" );
@@ -14,17 +14,31 @@ const dictionaryFile = properties.get( "source.server.dictionary" );
 const logging = process.argv[3];
 const dataDictionary = readDataDictionary();
 const attributesToAnonymise = readAttributes();  //TODO to be loaded from file
+const username=properties.get("source.server.username");
+const password=properties.get("source.server.password");
 
 // Fetch organization unit groups data with Authorization header
 async function fetchData() {
+    const credentials = Buffer.from(username+":"+password).toString('base64');
 
     try {
         const response = await fetch(sourceServerUrl, {
             headers: {
-                'Authorization': `ApiToken ${apiToken}`
+                'Authorization': `Basic ${credentials}`, // Update to Basic Auth
+                'Content-Type' : 'application/json',
+                'Accept' : 'application/json'
             }
         });
+
+        console.log("Fetching orgUnit request status: " +response.status);
+        
+        // Un comment for debuggging api request 
+        //console.log(response.text());
+
         const data = await response.json();
+
+        // un comment to see orgUnit data
+        //console.log(data);
 
         // Extract organization unit IDs from the response
         const ouIds = data.organisationUnits.map(unit => unit.id);
@@ -46,14 +60,18 @@ async function fetchData() {
          console.log("Starting download for all OrganisationUnits");
          await Promise.all(ouIds.map(async ouId => {
 
-            if ( logEnabled() ) console.log( "Downloading data for: " + ouId );
+             console.log( "Downloading data for: " + ouId );
 
             const teiUrl = sourceServerOrgUnitUrl.replace( '${ouId}',ouId);
             const response = await fetch( teiUrl, {
                 headers: {
-                    'Authorization': `ApiToken ${apiToken}`
+               //     'Authorization': `ApiToken ${apiToken}`
+                    'Authorization': `Basic ${credentials}`, // Update to Basic Auth
+
                 }   
             });
+
+            console.log("Fetching trackedEntityInstances request status: " +response.status);
 
             const data = await response.json();
             
@@ -90,7 +108,7 @@ async function fetchData() {
         })).then( data => {
             console.log(`Data successfully downloaded at ${downloadDirectory}`);
         }).catch( error => {
-            console.error( "Data download failed" + error)
+            console.error( "Data download failed: " + error)
         });   
         
     } catch (error) {
@@ -98,7 +116,7 @@ async function fetchData() {
     }
 }
 
-fetchData(); // Call the function to start the process
+fetchData(); // Call the function to start fetching the data
 
 function readDataDictionary() {
 

@@ -1,6 +1,15 @@
-source.server.ou.url = 
-source.server.tei.url= 
-source.server.token = 
+source.server.ou.url = http://localhost:8082/dhis_war/api/organisationUnits?fields=id&paging=false
+source.server.tei.url= http://localhost:8082/dhis_war/api/trackedEntityInstances.json?ou=${ouId}&program=IpHINAT79UW&fields=trackedEntityInstance,orgUnit,attributes[attribute,value]&pageSize=1000
+source.server.username=system
+source.server.password=System123
 source.download.dir= ./downloaded/
 source.server.attributes=w75KJ2mc4zz,zDhUuAYrxNC
 source.server.dictionary=./resources/dictionary.json
+
+
+target.server.username=system
+target.server.password=System123
+target.server.tei.url=http://localhost:8082/dhis_war/api/trackedEntityInstances?strategy=UPDATE
+
+
+

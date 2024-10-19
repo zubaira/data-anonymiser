@@ -3,12 +3,12 @@
 import fetch from 'node-fetch';
 import fs  from 'fs';
 import propertiesReader from 'properties-reader';
-
+    
 
 const properties = loadProperties();
 const apiToken = properties.get("source.server.token");
-const sourceServerUrl =  properties.get( "source.server.url" );
-const sourceServerOrgUnitUrl = properties.get( "source.server.orgunit.url" );
+const sourceServerUrl =  properties.get( "source.server.ou.dry.url" );
+const sourceServerOrgUnitUrl = properties.get( "source.server.tei.dry.url" );
 const downloadedFIle = properties.get( "source.download.dry.file" );
 
 const logging = process.argv[3];
