@@ -1,7 +1,7 @@
 {
   "name": "data_anonymizer",
   "description": "DHIS2 data-anonymiser script",
-  "author": "HISP Pakistan info@hisp.org.pk>",
+  "author": "HISP Pakistan info@hisp.org.pk",
   "main": "anonymise_and_download.js",
   "type": "module",
   "dependencies": {
