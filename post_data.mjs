@@ -10,10 +10,16 @@ import fetch from 'node-fetch';
 const properties = loadProperties();
 
 // Directory path where the JSON files are stored
-const directoryPath = properties.get( "source.download.dir" );
-const targetTeiUrl= properties.get("target.server.tei.url");
-const targetServerUsername = properties.get("target.server.username");
-const targetServerPassword = properties.get("target.server.password");
+const directoryPath = properties.get( "local.download.dir" );
+
+// URL to post tracked entity instances
+const targetTeiUrl= properties.get("server.url.tei.post");
+
+// Server username
+const targetServerUsername = properties.get("server.credentials.username");
+
+// Server password
+const targetServerPassword = properties.get("server.credentials.password");
 
 
 async function postData(){
@@ -26,10 +32,10 @@ async function postData(){
                 if (path.extname(file) === '.json') {
                     try {
                         // Read the content of the JSON file
-                        console.log("reading " + file);
+                        console.log("reading: " + file);
                         const filePath = path.join(directoryPath, file);
 
-                        console.log("reading filePath" + filePath);
+                        console.log("reading filePath: " + filePath);
                         const postData = await fs.promises.readFile(filePath, 'utf-8');
                         const credentials = Buffer.from(targetServerUsername+":"+targetServerPassword).toString('base64');
                         

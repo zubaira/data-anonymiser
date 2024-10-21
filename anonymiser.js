@@ -7,15 +7,37 @@ import propertiesReader from 'properties-reader';
 import { stringify } from 'querystring';
 
 const properties = loadProperties();
-const sourceServerUrl =  properties.get( "source.server.ou.url" );
-const sourceServerOrgUnitUrl = properties.get( "source.server.tei.url" );
-const downloadDirectory = properties.get( "source.download.dir" );
-const dictionaryFile = properties.get( "source.server.dictionary" );
+
+// URL to get organisationUnit in the form of 
+/**
+ * {
+ *      "organisationUnits" : [
+ *                  { 
+ *                      "id" : <uid> 
+ *                  }
+ *          ]
+ * }
+ */
+const sourceServerUrl =  properties.get( "server.url.get.ou" );
+
+// URL to get tracked entity instances
+const sourceServerOrgUnitUrl = properties.get( "server.url.get.tei" );
+
+// Local directory to download TEIs
+const downloadDirectory = properties.get( "local.download.dir" );
+
+// Local directory which contains data dictionary file
+const dictionaryFile = properties.get( "local.data.dictionary" );
+
+// Server username
+const username=properties.get("server.credentials.username");
+
+// Server password
+const password=properties.get("server.credentials.password");
+
 const logging = process.argv[3];
 const dataDictionary = readDataDictionary();
 const attributesToAnonymise = readAttributes();  //TODO to be loaded from file
-const username=properties.get("source.server.username");
-const password=properties.get("source.server.password");
 
 // Fetch organization unit groups data with Authorization header
 async function fetchData() {
@@ -57,7 +79,7 @@ async function fetchData() {
             });
         }
         
-         console.log("Starting download for all OrganisationUnits");
+      //   console.log("Starting download for all OrganisationUnits");
          await Promise.all(ouIds.map(async ouId => {
 
              console.log( "Downloading data for: " + ouId );
@@ -71,7 +93,7 @@ async function fetchData() {
                 }   
             });
 
-            console.log("Fetching trackedEntityInstances request status: " +response.status);
+      //      console.log("Fetching trackedEntityInstances request status: " +response.status);
 
             const data = await response.json();
             
@@ -119,15 +141,13 @@ async function fetchData() {
 fetchData(); // Call the function to start fetching the data
 
 function readDataDictionary() {
-
     var map = new Map(Object.entries(JSON.parse(fs.readFileSync(dictionaryFile).toString())));
-
     return map; 
 }
 
 function readAttributes() {
 
-   var value = properties.get("source.server.attributes");
+   var value = properties.get("server.data.attributesToAnonymize");
    return value.split(",");
 }
 

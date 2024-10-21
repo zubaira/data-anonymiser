@@ -1,15 +1,13 @@
-source.server.ou.url = <hostname>/api/organisationUnits?fields=id&paging=false
-source.server.tei.url= <hostname>/api/trackedEntityInstances.json?ou=${ouId}&program=IpHINAT79UW&fields=trackedEntityInstance,orgUnit,attributes[attribute,value]&pageSize=1000
-source.server.username=system
-source.server.password=System123
-source.download.dir= ./downloaded/
-source.server.attributes=<uid1>,<uid2>
-source.server.dictionary=./resources/dictionary.json
+server.url.get.ou = http://localhost:8082/dhis_war/api/organisationUnitGroups/QBWyrvvwTip?fields=organisationUnits
+server.url.get.tei= http://localhost:8082/dhis_war/api/trackedEntityInstances.json?ou=${ouId}&program=IpHINAT79UW&fields=trackedEntityInstance,orgUnit,attributes[attribute,value]&pageSize=1000
+server.url.tei.post=http://localhost:8082/dhis_war/api/trackedEntityInstances?strategy=UPDATE
 
+server.credentials.username=system
+server.credentials.password=System123
+server.data.attributesToAnonymize=w75KJ2mc4zz,zDhUuAYrxNC
 
-target.server.username=system
-target.server.password=System123
-target.server.tei.url=<hostname>/api/trackedEntityInstances?strategy=UPDATE
+local.download.dir= ./downloaded/
+local.data.dictionary=./resources/dictionary.json
 
-
-
+# http://localhost:8082/dhis_war/api/organisationUnitGroups/QBWyrvvwTip?fields=organisationUnits
+# http://localhost:8082/dhis_war/api/organisationUnits?fields=id&paging=false
