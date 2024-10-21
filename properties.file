@@ -4,7 +4,7 @@ server.url.tei.post=http://localhost:8082/dhis_war/api/trackedEntityInstances?st
 
 server.credentials.username=system
 server.credentials.password=System123
-server.data.attributesToAnonymize=w75KJ2mc4zz,zDhUuAYrxNC
+server.data.attributesToAnonymize=w75KJ2mc4zz,zDhUuAYrxNC,iESIqZ0R0R0
 
 local.download.dir= ./downloaded/
 local.data.dictionary=./resources/dictionary.json
